@@ -12,7 +12,13 @@ import time
 
 class BallSpawner(Node):
     def __init__(self):
-        super().__init__('ball_spawner')
+        # 显式声明节点参数
+        super().__init__(
+            'ball_spawner',
+            parameter_overrides=[
+                rclpy.parameter.Parameter('use_sim_time', rclpy.Parameter.Type.BOOL, True)
+            ]
+        )
         
         # ================= 配置区域 =================
         # 1. 你的地图文件路径 (请修改为你实际的路径)
