@@ -18,14 +18,13 @@
 
 ## 2. 环境要求
 
-* **系统版本**: Ubuntu 22.04 + ROS 2 Humble
-* **仿真环境**: Gazebo 11
-* **关键依赖**:
-* `nav2_bringup`
-* `gazebo_ros2_control`
-* `cv_bridge`
-* `sensor_msgs`
-
+* **操作系统**: Ubuntu 22.04 LTS
+* **ROS 版本**: ROS 2 Humble
+* **仿真器**: Gazebo 11
+* **主要依赖**:
+    - `nav2_bringup` (导航框架)
+    - `gazebo_ros2_control` (硬件接口)
+    - `cv_bridge` & `opencv-python` (视觉处理)
 
 
 ---
@@ -63,3 +62,24 @@ ros2 run my_robot_bringup spawn_ball
 
 ```
 
+## 5. 文件结构说明
+```text
+my_robot_bringup/
+├── config/
+│   ├── arm_controllers.yaml    # 机械臂 PID 增益与控制器配置
+│   └── nav2_params.yaml        # 导航膨胀层与局部路径规划参数
+├── launch/
+│   ├── gazebo.launch.py        # 启动 Gazebo、加载模型与控制器
+│   ├── navigation.launch.py    # 启动 Nav2、AMCL 与地图服务器
+│   └── task1.launch.py         # 【总控】一键启动完整任务流
+├── maps/
+│   └── my_maze_map.yaml        # 迷宫环境地图
+├── my_robot_bringup/
+│   ├── ball_detector.py        # 红色目标视觉识别节点（OpenCV）
+│   ├── mission_master.py       # 巡逻与扫描逻辑状态机
+│   └── spawn_ball.py           # 目标随机生成脚本
+└── urdf/
+    ├── mobile_manipulator.urdf.xacro  # 机器人描述文件
+    └── my_robot.gazebo.xacro          # Gazebo 插件配置
+
+```
