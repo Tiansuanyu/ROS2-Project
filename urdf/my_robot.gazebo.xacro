@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <gazebo reference="base_link"><material>Gazebo/Blue</material></gazebo>
+    <gazebo reference="left_wheel"><material>Gazebo/Black</material><mu1>2.0</mu1><mu2>2.0</mu2></gazebo>
+    <gazebo reference="right_wheel"><material>Gazebo/Black</material><mu1>2.0</mu1><mu2>2.0</mu2></gazebo>
+    <gazebo reference="arm_base"><material>Gazebo/White</material></gazebo>
+    <gazebo reference="gripper"><material>Gazebo/Blue</material></gazebo>
+    <gazebo reference="camera_link"><material>Gazebo/Red</material></gazebo>
+
+    <gazebo>
+        <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+            <ros>
+                <namespace>/</namespace>
+            </ros>
+            <update_rate>50</update_rate>
+
+            <left_joint>left_wheel_joint</left_joint>
+            <right_joint>right_wheel_joint</right_joint>
+
+            <wheel_separation>0.22</wheel_separation>
+            <wheel_diameter>0.1</wheel_diameter>
+            <max_wheel_torque>20</max_wheel_torque>
+            <max_wheel_acceleration>1.0</max_wheel_acceleration>
+
+            <command_topic>cmd_vel</command_topic>
+            <odometry_topic>odom</odometry_topic>
+            <odometry_frame>odom</odometry_frame>
+            <robot_base_frame>base_footprint</robot_base_frame>
+
+            <publish_odom>true</publish_odom>
+            <publish_odom_tf>true</publish_odom_tf>
+            <publish_wheel_tf>true</publish_wheel_tf>
+        </plugin>
+    </gazebo>
+
+    <gazebo>
+        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+            <parameters>$(find my_robot_bringup)/config/arm_controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+    <gazebo reference="lidar_link">
+        <sensor name="lidar" type="ray">
+            <visualize>true</visualize>
+            <update_rate>10</update_rate>
+            <ray>
+                <scan>
+                    <horizontal><samples>360</samples><min_angle>-3.14</min_angle><max_angle>3.14</max_angle></horizontal>
+                </scan>
+                <range><min>0.15</min><max>6.0</max></range>
+            </ray>
+            <plugin name="scan" filename="libgazebo_ros_ray_sensor.so">
+                <ros><remapping>~/out:=scan</remapping></ros>
+                <output_type>sensor_msgs/LaserScan</output_type>
+                <frame_name>lidar_link</frame_name>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+    <gazebo reference="camera_link">
+        <sensor type="camera" name="camera1">
+            <update_rate>30.0</update_rate>
+            <camera name="head">
+                <horizontal_fov>1.396</horizontal_fov>
+                <image><width>640</width><height>480</height><format>R8G8B8</format></image>
+                <clip><near>0.02</near><far>100</far></clip>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <cameraName>camera</cameraName>
+                <frameName>camera_link</frameName>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+    <gazebo>
+        <plugin name="gazebo_ros_vacuum_gripper" filename="libgazebo_ros_vacuum_gripper.so">
+            <ros><namespace>/demo</namespace><remapping>switch:=switch_suction</remapping></ros>
+            <link_name>gripper</link_name> 
+            <max_force>50</max_force>
+            <fixed>fixed</fixed>
+        </plugin>
+    </gazebo>
+
+</robot>

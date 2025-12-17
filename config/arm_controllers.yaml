@@ -1,0 +1,27 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100 # Hz
+
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+arm_controller:
+  ros__parameters:
+    joints:
+      - arm_base_joint
+      - shoulder_joint
+      - elbow_joint
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    # PID 参数非常重要，如果机械臂倒下，就加大 p 值
+    gains:
+      arm_base_joint: {p: 100.0, i: 0.01, d: 10.0}
+      shoulder_joint: {p: 500.0, i: 1.0, d: 20.0}
+      elbow_joint:    {p: 300.0, i: 1.0, d: 15.0}
