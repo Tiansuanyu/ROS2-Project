@@ -43,6 +43,9 @@ setup(
             'mission_master = my_robot_bringup.mission_master:main',
             'spawn_ball = my_robot_bringup.spawn_ball:main',
             'ball_detector = my_robot_bringup.ball_detector:main',
+            'voice_control = my_robot_bringup.voice_control:main',
+            'gesture_control = my_robot_bringup.gesture_control:main',
+            'hmi_controller = my_robot_bringup.hmi_controllers:main',
         ],
     },
 )
