@@ -70,7 +70,7 @@ ros2 run my_robot_bringup spawn_ball
 该模式会启动笔记本摄像头，并通过手势控制仿真机器人。节点会自动初始化位姿。
 
 ```bash
-ros2 launch my_robot_bringup gesture_launch.py
+ros2 launch my_robot_bringup gesture.launch.py
 ```
 
 ### 4.3 任务三：语音识别交互控制 (加分项)
